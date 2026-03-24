@@ -721,19 +721,97 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);min-hei
 
 <!-- TASK SUBMIT MODAL -->
 <div class="mwrap" id="task-modal">
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: sans-serif; background: #f0f0f0; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  .mwrap { min-height: 520px; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; padding: 1rem; border-radius: 12px; width: 100%; max-width: 480px; }
+  .modal { background: #fff; border-radius: 12px; border: 1px solid #ddd; padding: 1.5rem; width: 100%; }
+  .mt { font-size: 18px; font-weight: 500; color: #111; margin-bottom: 4px; }
+  .ms { font-size: 13px; color: #666; margin-bottom: 1rem; line-height: 1.5; }
+  .alert-box { background: #FFF3CD; border: 1px solid #F0AD4E; border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #664D03; margin-bottom: 1rem; line-height: 1.5; }
+  .alert-box strong { font-weight: 600; }
+  .field-label { font-size: 13px; font-weight: 500; color: #111; margin-bottom: 6px; display: block; }
+  .field-group { margin-bottom: 1rem; }
+  textarea { width: 100%; min-height: 80px; resize: vertical; padding: 8px 10px; font-size: 13px; font-family: sans-serif; color: #111; background: #fff; border: 1px solid #ccc; border-radius: 8px; outline: none; }
+  textarea:focus { border-color: #888; }
+  .browse-btn { display: block; width: 100%; padding: 10px; background: #3a9e5c; color: #fff; font-size: 14px; font-weight: 500; border: none; border-radius: 8px; cursor: pointer; text-align: center; margin-bottom: 6px; }
+  .browse-btn:hover { background: #2e8049; }
+  .file-status { font-size: 12px; color: #888; text-align: center; min-height: 18px; margin-bottom: 8px; }
+  .file-status.ok { color: #3a9e5c; font-weight: 500; }
+  .preview-img { width: 100%; max-height: 120px; object-fit: cover; border-radius: 8px; border: 1px solid #eee; margin-bottom: 8px; display: none; }
+  .dtimer { display: flex; align-items: center; gap: 8px; background: #f5f5f5; border-radius: 8px; padding: 10px 14px; margin-bottom: 1rem; }
+  .dtc { flex: 1; text-align: center; }
+  .dtl { font-size: 11px; color: #888; margin-bottom: 2px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .dtv { font-size: 20px; font-weight: 500; font-family: monospace; }
+  .rem { color: #D85A30; }
+  .spt { color: #111; }
+  .dtd { width: 1px; height: 36px; background: #ddd; }
+  .mbtns { display: flex; gap: 8px; margin-top: 1rem; }
+  .mcan { flex: 1; padding: 10px; background: transparent; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; color: #666; cursor: pointer; }
+  .mcan:hover { background: #f5f5f5; }
+  .msub { flex: 2; padding: 10px; background: #3a9e5c; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
+  .msub:hover { background: #2e8049; }
+  .msub:disabled { background: #ccc; color: #999; cursor: not-allowed; }
+  .success-msg { text-align: center; padding: 1.5rem 1rem; display: none; }
+  .success-icon { width: 48px; height: 48px; background: #EAF3DE; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 22px; color: #3a9e5c; }
+  .success-title { font-size: 16px; font-weight: 500; color: #111; margin-bottom: 6px; }
+  .success-sub { font-size: 13px; color: #666; }
+  input[type="file"] { display: none; }
+</style>
+</head>
+<body>
+
+<div class="mwrap" id="task-modal">
   <div class="modal">
-    <div class="mt" id="tm-title"></div>
-    <div class="ms" id="tm-sub"></div>
-    <div id="tm-body"></div>
-    <div class="dtimer" id="tm-dual" style="display:none">
-      <div class="dtc"><div class="dtl">Remaining</div><div class="dtv rem" id="tm-rem">2:00:00</div></div>
-      <div class="dtd"></div>
-      <div class="dtc"><div class="dtl">Spent</div><div class="dtv spt" id="tm-spt">0:00:00</div></div>
+    <div id="modal-content">
+      <div class="mt" id="tm-title">Follow @CompoundFinance on X</div>
+      <div class="ms" id="tm-sub">Rate: $0.003 &nbsp;·&nbsp; Credits in: 12 hours &nbsp;·&nbsp; Freq: Every 12 hrs</div>
+
+      <div class="alert-box">
+        <strong>Attention:</strong> Do not submit a screenshot of this instruction page. Submit a full screenshot of the exact proof the advertiser asks for.
+      </div>
+
+      <div id="tm-body">
+        <div class="field-group">
+          <label class="field-label" for="text-proof">Text proof</label>
+          <textarea id="text-proof" placeholder="Enter your X username or profile link…"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Screenshot</label>
+          <button class="browse-btn" onclick="document.getElementById('file-input').click()">Browse image</button>
+          <input type="file" id="file-input" accept="image/*" onchange="handleFile(this)">
+          <div class="file-status" id="file-status">No file selected</div>
+          <img class="preview-img" id="preview-img" alt="preview">
+        </div>
+      </div>
+
+      <div class="dtimer" id="tm-dual">
+        <div class="dtc">
+          <div class="dtl">Remaining</div>
+          <div class="dtv rem" id="tm-rem">2:00:00</div>
+        </div>
+        <div class="dtd"></div>
+        <div class="dtc">
+          <div class="dtl">Spent</div>
+          <div class="dtv spt" id="tm-spt">0:00:00</div>
+        </div>
+      </div>
+
+      <div class="mbtns">
+        <button class="mcan" onclick="closeTaskModal()">Cancel</button>
+        <button class="msub" id="tm-submit" onclick="submitTask()">Submit for approval</button>
+      </div>
     </div>
-    <div class="mbtns"><button class="mcan" onclick="closeTaskModal()">Cancel</button><button class="msub" id="tm-submit" onclick="submitTask()">Submit</button></div>
+
+    <div class="success-msg" id="success-msg">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Submitted for approval</div>
+      <div class="success-sub">You'll be credited within 12 hours once approved.</div>
+    </div>
   </div>
 </div>
-
 <!-- NEW TICKET MODAL -->
 <div class="mwrap" id="ticket-modal">
   <div class="modal">
@@ -797,6 +875,53 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);min-hei
 </div>
 
 <script>
+  let totalSecs = 7200, spentSecs = 0, timer;
+
+  function fmt(s) {
+    const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), ss = s % 60;
+    return [h, m, ss].map(x => String(x).padStart(2, '0')).join(':');
+  }
+
+  timer = setInterval(function () {
+    if (totalSecs <= 0) { clearInterval(timer); document.getElementById('tm-rem').textContent = '0:00:00'; return; }
+    totalSecs--; spentSecs++;
+    document.getElementById('tm-rem').textContent = fmt(totalSecs);
+    document.getElementById('tm-spt').textContent = fmt(spentSecs);
+  }, 1000);
+
+  function handleFile(input) {
+    const file = input.files[0];
+    const status = document.getElementById('file-status');
+    const preview = document.getElementById('preview-img');
+    if (!file) { status.textContent = 'No file selected'; status.className = 'file-status'; preview.style.display = 'none'; return; }
+    status.textContent = 'Upload complete — ' + file.name;
+    status.className = 'file-status ok';
+    const reader = new FileReader();
+    reader.onload = function (e) { preview.src = e.target.result; preview.style.display = 'block'; };
+    reader.readAsDataURL(file);
+  }
+
+  function submitTask() {
+    const proof = document.getElementById('text-proof').value.trim();
+    if (!proof) {
+      const ta = document.getElementById('text-proof');
+      ta.style.borderColor = 'red';
+      ta.focus();
+      return;
+    }
+    clearInterval(timer);
+    document.getElementById('modal-content').style.display = 'none';
+    document.getElementById('success-msg').style.display = 'block';
+  }
+
+  function closeTaskModal() {
+    clearInterval(timer);
+    document.getElementById('task-modal').style.display = 'none';
+  }
+
+  document.getElementById('text-proof').addEventListener('input', function () {
+    this.style.borderColor = '';
+  });
 var SU='https://vljghplhbqxgiljubcuw.supabase.co';
 var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsamdocGxoYnF4Z2lsanViY3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTEzNDUsImV4cCI6MjA4OTMyNzM0NX0.0JyA3HQwmMHBt_UBvMltwlrJ68w11p7vaC-GH9dYYVY';
 var STOR=SU+'/storage/v1/object/public/screenshots/';
