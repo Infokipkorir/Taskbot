@@ -838,6 +838,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);min-hei
 </div>
 
 <script>
+
 var SU='https://vljghplhbqxgiljubcuw.supabase.co';
 var SK='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZsamdocGxoYnF4Z2lsanViY3V3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NTEzNDUsImV4cCI6MjA4OTMyNzM0NX0.0JyA3HQwmMHBt_UBvMltwlrJ68w11p7vaC-GH9dYYVY';
 var STOR=SU+'/storage/v1/object/public/screenshots/';
@@ -1209,6 +1210,61 @@ function renderTasks(tasks,subMap){
       'Refresh Tasks</button></div>';
     return;
   }
+  async function submitTask() {
+  const textProof = document.getElementById("tm-text").value;
+  const file = document.getElementById("tm-file").files[0];
+
+  if (!textProof || !file) {
+    alert("Please complete all proof fields");
+    return;
+  }
+
+  const user = (await supabase.auth.getUser()).data.user;
+
+  if (!user) {
+    alert("Please login first");
+    return;
+  }
+
+  try {
+    // 1. Upload image to Supabase Storage
+    const fileName = `${user.id}_${Date.now()}_${file.name}`;
+
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from("task-proofs")
+      .upload(fileName, file);
+
+    if (uploadError) throw uploadError;
+
+    // 2. Get public URL
+    const { data: urlData } = supabase.storage
+      .from("task-proofs")
+      .getPublicUrl(fileName);
+
+    const imageUrl = urlData.publicUrl;
+
+    // 3. Save submission to DB
+    const { error: insertError } = await supabase
+      .from("submissions")
+      .insert({
+        user_id: user.id,
+        campaign_id: window.currentCampaign.id,
+        text_proof: textProof,
+        image_url: imageUrl,
+        status: "pending"
+      });
+
+    if (insertError) throw insertError;
+
+    alert("✅ Task submitted successfully!");
+
+    closeTaskModal();
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Submission failed");
+  }
+  }
   var showTimer=!CU||(CU.settings||{}).timer!==false;
   var html='';
   filtered.forEach(function(t){
@@ -1251,6 +1307,41 @@ function renderTasks(tasks,subMap){
         '<div class="ptrk"><div class="pfil" id="pf-'+t.id+'" style="width:'+pct+'%;background:'+pc+'"></div></div>'+
         '</div>';
     }
+    async function openTaskModal(campaignId) {
+  document.getElementById("task-modal").style.display = "flex";
+
+  const { data, error } = await supabase
+    .from("campaigns")
+    .select("*")
+    .eq("id", campaignId)
+    .single();
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  // Fill UI
+  document.getElementById("tm-title").innerText = data.title;
+  document.getElementById("tm-sub").innerText = data.subtitle;
+  document.getElementById("tm-id").innerText = data.id;
+  document.getElementById("tm-rate").innerText = data.rate;
+  document.getElementById("tm-frequency").innerText = data.frequency;
+  document.getElementById("tm-time").innerText = data.time;
+
+  // Instructions
+  const list = document.getElementById("tm-instructions");
+  list.innerHTML = "";
+
+  data.instructions.forEach(step => {
+    const li = document.createElement("li");
+    li.innerText = step;
+    list.appendChild(li);
+  });
+
+  // Save current campaign globally
+  window.currentCampaign = data;
+  }
     var expOv=rem<=0&&!isDone&&!isPend?'<div class="tc-expov">Task expired</div>':'';
     var cardCls='tcard'+(rem<=0&&!isDone?' t-expired':isAct?' t-active':'');
     html+='<div class="'+cardCls+'" id="tc-'+t.id+'">'+
