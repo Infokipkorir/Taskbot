@@ -719,18 +719,59 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);min-hei
 </div><!-- /sc-main -->
 
 
-<!-- TASK SUBMIT MODAL -->
+<!-- TASK MODAL -->
 <div class="mwrap" id="task-modal">
-  <div class="modal">
-    <div class="mt" id="tm-title"></div>
-    <div class="ms" id="tm-sub"></div>
-    <div id="tm-body"></div>
-    <div class="dtimer" id="tm-dual" style="display:none">
-      <div class="dtc"><div class="dtl">Remaining</div><div class="dtv rem" id="tm-rem">2:00:00</div></div>
-      <div class="dtd"></div>
-      <div class="dtc"><div class="dtl">Spent</div><div class="dtv spt" id="tm-spt">0:00:00</div></div>
+  <div class="modal-box">
+
+    <!-- HEADER -->
+    <div class="modal-header">
+      <h5 id="tm-title"></h5>
+      <p id="tm-sub"></p>
     </div>
-    <div class="mbtns"><button class="mcan" onclick="closeTaskModal()">Cancel</button><button class="msub" id="tm-submit" onclick="submitTask()">Submit</button></div>
+
+    <!-- BODY -->
+    <div class="modal-body">
+
+      <!-- CAMPAIGN INFO -->
+      <div class="card info-card">
+        <p><strong>Campaign ID:</strong> <span id="tm-id"></span></p>
+        <p><strong>Rate:</strong> $<span id="tm-rate"></span></p>
+        <p><strong>Frequency:</strong> <span id="tm-frequency"></span></p>
+        <p><strong>AVG Time:</strong> <span id="tm-time"></span></p>
+      </div>
+
+      <!-- INSTRUCTIONS -->
+      <div class="card">
+        <h6>Instructions</h6>
+        <ol id="tm-instructions"></ol>
+      </div>
+
+      <!-- WARNING -->
+      <div class="warning-box">
+        <strong>ATTENTION:</strong> Do NOT upload this page screenshot.
+      </div>
+
+      <!-- PROOF -->
+      <div class="card">
+        <h6>Proof of Completion</h6>
+
+        <label>Text Proof</label>
+        <textarea id="tm-text" class="form-control"></textarea>
+
+        <label class="mt-3">Screenshot</label>
+        <input type="file" id="tm-file" class="form-control">
+
+        <button class="btn upload-btn mt-3">Upload Complete</button>
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="modal-footer">
+      <button class="btn cancel-btn" onclick="closeTaskModal()">Cancel</button>
+      <button class="btn submit-btn" onclick="submitTask()">Submit</button>
+    </div>
+
   </div>
 </div>
 
