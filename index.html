@@ -36,24 +36,228 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);min-hei
 .a-info:before{content:"ℹ"}
 
 /* ── AUTH ── */
-.awrap{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 20px;min-height:100vh}
-.acard{background:var(--card);border:0.5px solid var(--b);border-radius:var(--rl2);padding:22px 20px;width:100%;max-width:360px;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-.atitle{font-size:16px;font-weight:700;color:var(--tx);margin-bottom:3px}
-.asub{font-size:12px;color:var(--mu);margin-bottom:16px}
-.fl{margin-bottom:12px}
-.fl label{display:block;font-size:10px;font-weight:600;color:var(--mu);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.fw{position:relative}
-.fw input{width:100%;padding:9px 36px 9px 10px;border:0.5px solid var(--b2);border-radius:var(--r);font-size:13px;color:var(--tx);background:#fff;outline:none;transition:border-color .15s}
-.fw input.ni{padding-right:10px}
-.fw input:focus{border-color:var(--blue)}
-.pwtog{position:absolute;right:9px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--hi);padding:0}
-.pwtog svg{width:16px;height:16px}
-.abtn{width:100%;padding:10px;background:linear-gradient(135deg,#0288D1,#01579B);color:#fff;border:none;border-radius:var(--r);font-size:13px;font-weight:700;cursor:pointer;margin-top:4px;letter-spacing:.2px}
-.abtn:hover{opacity:.88}
-.abtn:disabled{opacity:.45;cursor:not-allowed}
-.aswitch{text-align:center;font-size:12px;color:var(--mu);margin-top:12px}
-.aswitch a{color:var(--blue);cursor:pointer;font-weight:600}
+/* ========== GLOBAL RESET & VARIABLES ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: system-ui, 'Segoe UI', 'Inter', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+}
 
+body {
+    background: linear-gradient(145deg, #e9f0fc 0%, #dbe6f2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+/* ========== AUTH WRAPPER ========== */
+.auth-wrapper {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* ========== CARD STYLES ========== */
+.acard {
+    background: rgba(255, 255, 255, 0.98);
+    border-radius: 2rem;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 2rem 1.8rem;
+    border: 1px solid rgba(255,255,255,0.6);
+}
+
+.atitle {
+    font-size: 1.9rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #1e2b3c, #0f212f);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: -0.3px;
+    margin-bottom: 0.25rem;
+}
+
+.asub {
+    font-size: 0.9rem;
+    color: #5b6e8c;
+    margin-bottom: 1.5rem;
+    border-left: 3px solid #3b82f6;
+    padding-left: 0.7rem;
+}
+
+/* ========== MESSAGE BOX ========== */
+.msg-box {
+    background: #fef2e8;
+    border-radius: 1rem;
+    padding: 0.7rem 1rem;
+    font-size: 0.8rem;
+    color: #b45309;
+    margin-bottom: 1.2rem;
+    border-left: 4px solid #f97316;
+    display: none;
+}
+
+/* ========== FORM FIELDS ========== */
+.fl {
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.fl label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #1e2a3e;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.fw {
+    position: relative;
+    width: 100%;
+}
+
+.ni {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 1.2rem;
+    font-size: 0.9rem;
+    background: white;
+    transition: 0.2s;
+    outline: none;
+}
+
+.ni:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.2);
+}
+
+.field-hint {
+    font-size: 10px;
+    color: #6c86a3;
+    margin-top: 5px;
+}
+
+/* ========== PASSWORD TOGGLE BUTTON ========== */
+.password-wrapper {
+    position: relative;
+}
+
+.pwtog {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 30px;
+    color: #7c8ba0;
+    transition: all 0.1s;
+    font-size: 1.2rem;
+}
+
+.pwtog:hover {
+    background: #eef2ff;
+    color: #1e40af;
+}
+
+/* ========== COUNTRY DROPDOWN ========== */
+.country-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 1.2rem;
+    font-size: 0.9rem;
+    background: white;
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%234b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+}
+
+/* ========== BUTTONS ========== */
+.abtn {
+    width: 100%;
+    background: #0f2b3d;
+    color: white;
+    border: none;
+    padding: 0.9rem;
+    border-radius: 2rem;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.abtn:hover {
+    background: #1e3a5f;
+    transform: scale(0.98);
+}
+
+/* ========== SWITCH LINK ========== */
+.aswitch {
+    text-align: center;
+    margin-top: 1.4rem;
+    font-size: 0.85rem;
+    color: #4a5b7a;
+}
+
+.aswitch a {
+    color: #2563eb;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.aswitch a:hover {
+    text-decoration: underline;
+}
+
+/* ========== TERMS NOTE ========== */
+.terms-note {
+    font-size: 10px;
+    color: #5c6f8f;
+    margin-bottom: 12px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.terms-note a {
+    color: #2563eb;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+/* ========== RESPONSIVE TWEAKS ========== */
+@media (max-width: 480px) {
+    .acard {
+        padding: 1.5rem;
+    }
+    .atitle {
+        font-size: 1.6rem;
+    }
+  }
+  
 /* ── TOPBAR ── */
 .topbar{background:var(--card);border-bottom:0.5px solid var(--b);padding:0 14px;display:flex;align-items:center;height:48px;flex-shrink:0;position:sticky;top:0;z-index:10}
 .mbtn{width:36px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:none;background:none;color:var(--mu)}
@@ -419,29 +623,107 @@ body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);min-hei
   </div>
 
   <!-- SIGNUP -->
-  <div class="acard" id="card-signup" style="display:none">
-    <div class="atitle">Create account</div>
-    <div class="asub">Start earning today</div>
-    <div id="as-msg"></div>
-    <div class="fl"><label>Display name</label><div class="fw"><input class="ni" id="su-nm" type="text" placeholder="Your name"/></div></div>
-    <div class="fl"><label>Email</label><div class="fw"><input class="ni" id="su-em" type="email" placeholder="you@example.com"/></div></div>
-    <div class="fl"><label>Username</label><div class="fw"><input class="ni" id="su-us" type="text" placeholder="@username"/></div></div>
-    <div class="fl"><label>Password</label>
-      <div class="fw">
-        <input id="su-pw" type="password" placeholder="Min 6 characters"/>
-        <button class="pwtog" type="button" onclick="togglePw('su-pw',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
-      </div>
+<div class="auth-wrapper">
+    <!-- SIGNUP CARD -->
+    <div class="acard" id="card-signup" style="display: block;">
+        <div class="atitle">✨ Create account</div>
+        <div class="asub">Secure access · start earning today</div>
+        <div id="as-msg" class="msg-box"></div>
+
+        <div class="fl">
+            <label><i class="bi bi-person"></i> Display name</label>
+            <div class="fw">
+                <input class="ni" id="su-nm" type="text" placeholder="John Carter">
+            </div>
+        </div>
+
+        <div class="fl">
+            <label><i class="bi bi-envelope"></i> Email</label>
+            <div class="fw">
+                <input class="ni" id="su-em" type="email" placeholder="hello@outlook.com">
+            </div>
+        </div>
+
+        <div class="fl">
+            <label><i class="bi bi-at"></i> Username</label>
+            <div class="fw">
+                <input class="ni" id="su-us" type="text" placeholder="@john_carter">
+                <div class="field-hint">Unique, letters/numbers/_ only (3‑20 chars)</div>
+            </div>
+        </div>
+
+        <div class="fl">
+            <label><i class="bi bi-lock"></i> Password</label>
+            <div class="fw password-wrapper">
+                <input id="su-pw" type="password" placeholder="Min 6 chars · 1 letter & 1 number">
+                <button class="pwtog" type="button" onclick="togglePw('su-pw', this)">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="fl">
+            <label><i class="bi bi-check-circle"></i> Confirm password</label>
+            <div class="fw password-wrapper">
+                <input id="su-pw2" type="password" placeholder="Repeat your password">
+                <button class="pwtog" type="button" onclick="togglePw('su-pw2', this)">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="fl">
+            <label><i class="bi bi-globe2"></i> Country</label>
+            <div class="fw">
+                <select id="su-country" class="country-select"></select>
+            </div>
+        </div>
+
+        <div class="terms-note">
+            By signing up you agree to our 
+            <a onclick="showAuthCard('signup');setTimeout(function(){goTab('terms');},200)">Terms</a> and 
+            <a onclick="showAuthCard('signup');setTimeout(function(){goTab('privacy');},200)">Privacy Policy</a>.
+        </div>
+
+        <button class="abtn" id="su-btn" onclick="doSignup()">
+            <i class="bi bi-person-plus"></i> Create account
+        </button>
+        <div class="aswitch">
+            Have account? <a onclick="showAuthCard('login')">Sign in</a>
+        </div>
     </div>
-    <div class="fl"><label>Confirm password</label>
-      <div class="fw">
-        <input id="su-pw2" type="password" placeholder="Repeat password"/>
-        <button class="pwtog" type="button" onclick="togglePw('su-pw2',this)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg></button>
-      </div>
+
+    <!-- LOGIN CARD (minimal for demo) -->
+    <div class="acard" id="card-login" style="display: none;">
+        <div class="atitle">Welcome back</div>
+        <div class="asub">Sign in to your profile</div>
+        <div id="login-msg" class="msg-box"></div>
+
+        <div class="fl">
+            <label><i class="bi bi-envelope-at"></i> Email or username</label>
+            <div class="fw">
+                <input class="ni" id="login-identifier" type="text" placeholder="username or email">
+            </div>
+        </div>
+
+        <div class="fl">
+            <label><i class="bi bi-key"></i> Password</label>
+            <div class="fw password-wrapper">
+                <input id="login-pw" type="password" placeholder="your password">
+                <button class="pwtog" type="button" onclick="togglePw('login-pw', this)">
+                    <i class="bi bi-eye-slash"></i>
+                </button>
+            </div>
+        </div>
+
+        <button class="abtn" onclick="doLogin()">
+            <i class="bi bi-box-arrow-in-right"></i> Sign in
+        </button>
+        <div class="aswitch">
+            No account? <a onclick="showAuthCard('signup')">Create one</a>
+        </div>
     </div>
-    <div style="font-size:10px;color:var(--mu);margin-bottom:8px;line-height:1.5">By signing up you agree to our <a onclick="showAuthCard('signup');setTimeout(function(){goTab('terms');},200)" style="color:var(--blue);cursor:pointer">Terms</a> and <a onclick="showAuthCard('signup');setTimeout(function(){goTab('privacy');},200)" style="color:var(--blue);cursor:pointer">Privacy Policy</a>.</div>
-    <button class="abtn" id="su-btn" onclick="doSignup()">Create account</button>
-    <div class="aswitch">Have account? <a onclick="showAuthCard('login')">Sign in</a></div>
-  </div>
+</div>
 
   <!-- FORGOT -->
   <div class="acard" id="card-forgot" style="display:none">
@@ -1230,6 +1512,300 @@ function renderNotifications(list) {
           +   '</div>'
           + '</div>';
   });
+  // ==================== MOCK DATABASE (localStorage) ====================
+const STORAGE_KEY = "secure_app_users";
+
+function loadUsers() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return [];
+    try {
+        return JSON.parse(raw);
+    } catch (e) {
+        return [];
+    }
+}
+
+function saveUsers(users) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
+}
+
+// ==================== UTILITIES ====================
+function showMessage(containerId, message, isError = true) {
+    const msgDiv = document.getElementById(containerId);
+    if (!msgDiv) return;
+    msgDiv.style.display = "block";
+    msgDiv.style.background = isError ? "#fee2e2" : "#e0f2fe";
+    msgDiv.style.color = isError ? "#b91c1c" : "#0c4e6e";
+    msgDiv.style.borderLeftColor = isError ? "#ef4444" : "#0ea5e9";
+    msgDiv.innerHTML = message;
+    setTimeout(() => {
+        if (msgDiv) msgDiv.style.display = "none";
+    }, 3800);
+}
+
+function clearMsg(containerId) {
+    const div = document.getElementById(containerId);
+    if (div) div.style.display = "none";
+}
+
+// ==================== PASSWORD TOGGLE (Bootstrap Icons) ====================
+window.togglePw = function(inputId, btn) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
+    const icon = btn.querySelector('i');
+    if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove('bi-eye-slash');
+        icon.classList.add('bi-eye');
+    } else {
+        input.type = "password";
+        icon.classList.remove('bi-eye');
+        icon.classList.add('bi-eye-slash');
+    }
+};
+
+// ==================== VALIDATION RULES ====================
+function isStrongPassword(pwd) {
+    if (pwd.length < 6) return false;
+    const hasLetter = /[A-Za-z]/.test(pwd);
+    const hasNumber = /\d/.test(pwd);
+    return hasLetter && hasNumber;
+}
+
+function isAllowedEmail(email) {
+    const trimmed = email.trim().toLowerCase();
+    const parts = trimmed.split('@');
+    if (parts.length !== 2) return false;
+    const domain = parts[1];
+    const allowedDomains = ['gmail.co', 'outlook.com', 'hotmail.com'];
+    return allowedDomains.includes(domain);
+}
+
+function isValidUsernameFormat(username) {
+    const regex = /^[a-zA-Z0-9_]{3,20}$/;
+    return regex.test(username);
+}
+
+function isUsernameUnique(username, excludeUserId = null) {
+    const users = loadUsers();
+    const lowerUsername = username.trim().toLowerCase();
+    return !users.some(user => user.username.toLowerCase() === lowerUsername && (excludeUserId === null || user.id !== excludeUserId));
+}
+
+// ==================== COUNTRY DATA (with flag emoji) ====================
+const countryData = [
+    { code: "AF", name: "Afghanistan" }, { code: "AL", name: "Albania" }, { code: "DZ", name: "Algeria" }, { code: "AD", name: "Andorra" }, { code: "AO", name: "Angola" },
+    { code: "AG", name: "Antigua and Barbuda" }, { code: "AR", name: "Argentina" }, { code: "AM", name: "Armenia" }, { code: "AU", name: "Australia" }, { code: "AT", name: "Austria" },
+    { code: "AZ", name: "Azerbaijan" }, { code: "BS", name: "Bahamas" }, { code: "BH", name: "Bahrain" }, { code: "BD", name: "Bangladesh" }, { code: "BB", name: "Barbados" },
+    { code: "BY", name: "Belarus" }, { code: "BE", name: "Belgium" }, { code: "BZ", name: "Belize" }, { code: "BJ", name: "Benin" }, { code: "BT", name: "Bhutan" },
+    { code: "BO", name: "Bolivia" }, { code: "BA", name: "Bosnia and Herzegovina" }, { code: "BW", name: "Botswana" }, { code: "BR", name: "Brazil" }, { code: "BN", name: "Brunei" },
+    { code: "BG", name: "Bulgaria" }, { code: "BF", name: "Burkina Faso" }, { code: "BI", name: "Burundi" }, { code: "CV", name: "Cabo Verde" }, { code: "KH", name: "Cambodia" },
+    { code: "CM", name: "Cameroon" }, { code: "CA", name: "Canada" }, { code: "CF", name: "Central African Republic" }, { code: "TD", name: "Chad" }, { code: "CL", name: "Chile" },
+    { code: "CN", name: "China" }, { code: "CO", name: "Colombia" }, { code: "KM", name: "Comoros" }, { code: "CG", name: "Congo" }, { code: "CR", name: "Costa Rica" },
+    { code: "HR", name: "Croatia" }, { code: "CU", name: "Cuba" }, { code: "CY", name: "Cyprus" }, { code: "CZ", name: "Czech Republic" }, { code: "DK", name: "Denmark" },
+    { code: "DJ", name: "Djibouti" }, { code: "DM", name: "Dominica" }, { code: "DO", name: "Dominican Republic" }, { code: "EC", name: "Ecuador" }, { code: "EG", name: "Egypt" },
+    { code: "SV", name: "El Salvador" }, { code: "GQ", name: "Equatorial Guinea" }, { code: "ER", name: "Eritrea" }, { code: "EE", name: "Estonia" }, { code: "SZ", name: "Eswatini" },
+    { code: "ET", name: "Ethiopia" }, { code: "FJ", name: "Fiji" }, { code: "FI", name: "Finland" }, { code: "FR", name: "France" }, { code: "GA", name: "Gabon" },
+    { code: "GM", name: "Gambia" }, { code: "GE", name: "Georgia" }, { code: "DE", name: "Germany" }, { code: "GH", name: "Ghana" }, { code: "GR", name: "Greece" },
+    { code: "GD", name: "Grenada" }, { code: "GT", name: "Guatemala" }, { code: "GN", name: "Guinea" }, { code: "GW", name: "Guinea-Bissau" }, { code: "GY", name: "Guyana" },
+    { code: "HT", name: "Haiti" }, { code: "HN", name: "Honduras" }, { code: "HU", name: "Hungary" }, { code: "IS", name: "Iceland" }, { code: "IN", name: "India" },
+    { code: "ID", name: "Indonesia" }, { code: "IR", name: "Iran" }, { code: "IQ", name: "Iraq" }, { code: "IE", name: "Ireland" }, { code: "IL", name: "Israel" },
+    { code: "IT", name: "Italy" }, { code: "JM", name: "Jamaica" }, { code: "JP", name: "Japan" }, { code: "JO", name: "Jordan" }, { code: "KZ", name: "Kazakhstan" },
+    { code: "KE", name: "Kenya" }, { code: "KI", name: "Kiribati" }, { code: "KP", name: "North Korea" }, { code: "KR", name: "South Korea" }, { code: "KW", name: "Kuwait" },
+    { code: "KG", name: "Kyrgyzstan" }, { code: "LA", name: "Laos" }, { code: "LV", name: "Latvia" }, { code: "LB", name: "Lebanon" }, { code: "LS", name: "Lesotho" },
+    { code: "LR", name: "Liberia" }, { code: "LY", name: "Libya" }, { code: "LI", name: "Liechtenstein" }, { code: "LT", name: "Lithuania" }, { code: "LU", name: "Luxembourg" },
+    { code: "MG", name: "Madagascar" }, { code: "MW", name: "Malawi" }, { code: "MY", name: "Malaysia" }, { code: "MV", name: "Maldives" }, { code: "ML", name: "Mali" },
+    { code: "MT", name: "Malta" }, { code: "MH", name: "Marshall Islands" }, { code: "MR", name: "Mauritania" }, { code: "MU", name: "Mauritius" }, { code: "MX", name: "Mexico" },
+    { code: "FM", name: "Micronesia" }, { code: "MD", name: "Moldova" }, { code: "MC", name: "Monaco" }, { code: "MN", name: "Mongolia" }, { code: "ME", name: "Montenegro" },
+    { code: "MA", name: "Morocco" }, { code: "MZ", name: "Mozambique" }, { code: "MM", name: "Myanmar" }, { code: "NA", name: "Namibia" }, { code: "NR", name: "Nauru" },
+    { code: "NP", name: "Nepal" }, { code: "NL", name: "Netherlands" }, { code: "NZ", name: "New Zealand" }, { code: "NI", name: "Nicaragua" }, { code: "NE", name: "Niger" },
+    { code: "NG", name: "Nigeria" }, { code: "MK", name: "North Macedonia" }, { code: "NO", name: "Norway" }, { code: "OM", name: "Oman" }, { code: "PK", name: "Pakistan" },
+    { code: "PW", name: "Palau" }, { code: "PA", name: "Panama" }, { code: "PG", name: "Papua New Guinea" }, { code: "PY", name: "Paraguay" }, { code: "PE", name: "Peru" },
+    { code: "PH", name: "Philippines" }, { code: "PL", name: "Poland" }, { code: "PT", name: "Portugal" }, { code: "QA", name: "Qatar" }, { code: "RO", name: "Romania" },
+    { code: "RU", name: "Russia" }, { code: "RW", name: "Rwanda" }, { code: "KN", name: "Saint Kitts and Nevis" }, { code: "LC", name: "Saint Lucia" }, { code: "VC", name: "Saint Vincent" },
+    { code: "WS", name: "Samoa" }, { code: "SM", name: "San Marino" }, { code: "ST", name: "Sao Tome and Principe" }, { code: "SA", name: "Saudi Arabia" }, { code: "SN", name: "Senegal" },
+    { code: "RS", name: "Serbia" }, { code: "SC", name: "Seychelles" }, { code: "SL", name: "Sierra Leone" }, { code: "SG", name: "Singapore" }, { code: "SK", name: "Slovakia" },
+    { code: "SI", name: "Slovenia" }, { code: "SB", name: "Solomon Islands" }, { code: "SO", name: "Somalia" }, { code: "ZA", name: "South Africa" }, { code: "SS", name: "South Sudan" },
+    { code: "ES", name: "Spain" }, { code: "LK", name: "Sri Lanka" }, { code: "SD", name: "Sudan" }, { code: "SR", name: "Suriname" }, { code: "SE", name: "Sweden" },
+    { code: "CH", name: "Switzerland" }, { code: "SY", name: "Syria" }, { code: "TW", name: "Taiwan" }, { code: "TJ", name: "Tajikistan" }, { code: "TZ", name: "Tanzania" },
+    { code: "TH", name: "Thailand" }, { code: "TL", name: "Timor-Leste" }, { code: "TG", name: "Togo" }, { code: "TO", name: "Tonga" }, { code: "TT", name: "Trinidad and Tobago" },
+    { code: "TN", name: "Tunisia" }, { code: "TR", name: "Turkey" }, { code: "TM", name: "Turkmenistan" }, { code: "TV", name: "Tuvalu" }, { code: "UG", name: "Uganda" },
+    { code: "UA", name: "Ukraine" }, { code: "AE", name: "United Arab Emirates" }, { code: "GB", name: "United Kingdom" }, { code: "US", name: "United States" }, { code: "UY", name: "Uruguay" },
+    { code: "UZ", name: "Uzbekistan" }, { code: "VU", name: "Vanuatu" }, { code: "VA", name: "Vatican City" }, { code: "VE", name: "Venezuela" }, { code: "VN", name: "Vietnam" },
+    { code: "YE", name: "Yemen" }, { code: "ZM", name: "Zambia" }, { code: "ZW", name: "Zimbabwe" }
+];
+
+function getFlagEmoji(countryCode) {
+    if (!countryCode) return "🏳️";
+    const codePoints = countryCode.toUpperCase().split('').map(ch => 127397 + ch.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
+}
+
+function populateCountryDropdown() {
+    const selectEl = document.getElementById("su-country");
+    if (!selectEl) return;
+    selectEl.innerHTML = "";
+    countryData.forEach(country => {
+        const flag = getFlagEmoji(country.code);
+        const option = document.createElement("option");
+        option.value = country.code;
+        option.textContent = `${flag}  ${country.name}`;
+        selectEl.appendChild(option);
+    });
+    // Set default to United States
+    if (countryData.find(c => c.code === "US")) selectEl.value = "US";
+}
+
+// ==================== SIGNUP LOGIC ====================
+window.doSignup = function() {
+    clearMsg("as-msg");
+
+    const displayName = document.getElementById("su-nm").value.trim();
+    const email = document.getElementById("su-em").value.trim();
+    const username = document.getElementById("su-us").value.trim();
+    const password = document.getElementById("su-pw").value;
+    const confirmPw = document.getElementById("su-pw2").value;
+    const countryCode = document.getElementById("su-country").value;
+    const countryObj = countryData.find(c => c.code === countryCode);
+    const countryName = countryObj ? countryObj.name : "Unknown";
+
+    // Required fields
+    if (!displayName || !email || !username || !password || !confirmPw) {
+        showMessage("as-msg", "❌ All fields are required.", true);
+        return;
+    }
+
+    // Email domain restriction
+    if (!isAllowedEmail(email)) {
+        showMessage("as-msg", "📛 Only emails with @gmail.co, @outlook.com or @Hotmail.com are allowed.", true);
+        return;
+    }
+
+    // Username format & uniqueness
+    if (!isValidUsernameFormat(username)) {
+        showMessage("as-msg", "⚠️ Username must be 3-20 characters: letters, numbers, underscore only.", true);
+        return;
+    }
+    if (!isUsernameUnique(username)) {
+        showMessage("as-msg", "🚫 This username is already taken. Please choose a unique username.", true);
+        return;
+    }
+
+    // Strong password check
+    if (!isStrongPassword(password)) {
+        showMessage("as-msg", "🔐 Password must be at least 6 characters and contain both letters and numbers.", true);
+        return;
+    }
+
+    if (password !== confirmPw) {
+        showMessage("as-msg", "❌ Passwords do not match.", true);
+        return;
+    }
+
+    // Extra email sanity
+    if (!email.includes("@") || email.split("@")[1] === "") {
+        showMessage("as-msg", "📧 Enter a valid email address.", true);
+        return;
+    }
+
+    // Save new user
+    const users = loadUsers();
+    const newUser = {
+        id: Date.now(),
+        displayName: displayName,
+        email: email.toLowerCase(),
+        username: username.toLowerCase(),
+        password: password,      // In production, hash this!
+        country: countryName,
+        countryCode: countryCode,
+        createdAt: new Date().toISOString()
+    };
+    users.push(newUser);
+    saveUsers(users);
+
+    // Success message and reset form
+    showMessage("as-msg", `🎉 Account created successfully! Welcome ${displayName}. Please sign in.`, false);
+    document.getElementById("su-nm").value = "";
+    document.getElementById("su-em").value = "";
+    document.getElementById("su-us").value = "";
+    document.getElementById("su-pw").value = "";
+    document.getElementById("su-pw2").value = "";
+
+    // Switch to login card after delay
+    setTimeout(() => {
+        showAuthCard('login');
+        const loginMsgDiv = document.getElementById("login-msg");
+        if (loginMsgDiv) {
+            loginMsgDiv.style.display = "block";
+            loginMsgDiv.innerHTML = "✅ Signup success! Log in with your credentials.";
+            setTimeout(() => { if (loginMsgDiv) loginMsgDiv.style.display = "none"; }, 3500);
+        }
+    }, 1200);
+};
+
+// ==================== LOGIN LOGIC ====================
+window.doLogin = function() {
+    clearMsg("login-msg");
+    const identifier = document.getElementById("login-identifier").value.trim();
+    const password = document.getElementById("login-pw").value;
+    if (!identifier || !password) {
+        showMessage("login-msg", "Please enter email/username and password.", true);
+        return;
+    }
+    const users = loadUsers();
+    const found = users.find(user =>
+        (user.email === identifier.toLowerCase() || user.username === identifier.toLowerCase()) &&
+        user.password === password
+    );
+    if (found) {
+        showMessage("login-msg", `✨ Welcome back, ${found.displayName}! Login successful.`, false);
+        setTimeout(() => {
+            alert("🔓 Demo: Logged in as " + found.displayName + " (dashboard would open)");
+        }, 400);
+    } else {
+        showMessage("login-msg", "Invalid credentials or user not found.", true);
+    }
+};
+
+// ==================== CARD TOGGLE ====================
+window.showAuthCard = function(cardType) {
+    const signupCard = document.getElementById("card-signup");
+    const loginCard = document.getElementById("card-login");
+    if (cardType === "signup") {
+        signupCard.style.display = "block";
+        loginCard.style.display = "none";
+        clearMsg("as-msg");
+    } else {
+        signupCard.style.display = "none";
+        loginCard.style.display = "block";
+        clearMsg("login-msg");
+    }
+};
+
+// ==================== TERMS / PRIVACY DEMO ====================
+window.goTab = function(section) {
+    alert(`📄 ${section === 'terms' ? 'Terms of Service' : 'Privacy Policy'} — This is a demo. In production, you would see the full legal document.`);
+};
+
+// ==================== INITIALIZATION ====================
+window.onload = function() {
+    populateCountryDropdown();
+
+    // Seed demo user if storage empty (for uniqueness testing)
+    const existing = loadUsers();
+    if (existing.length === 0) {
+        const demoUsers = [{
+            id: 1001,
+            displayName: "Demo User",
+            email: "demo@outlook.com",
+            username: "demo_john",
+            password: "Pass1234",
+            country: "United States",
+            countryCode: "US"
+        }];
+        saveUsers(demoUsers);
+    }
+};
 
   el.innerHTML = html;
   updateNotifBadge(unread);
